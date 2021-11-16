@@ -95,7 +95,7 @@ app.layout = html.Div([
             value=['NYC']
         ),
     ], style={'padding': 10, 'flex': 1})
-], style={'display': 'flex', 'flex-direction': 'row'})
+], style={'display': 'flex', 'flex-direction': 'column'})
 
 if __name__ == '__main__':
     app.run_server(debug=True)

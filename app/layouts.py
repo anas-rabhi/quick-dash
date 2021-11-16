@@ -1,11 +1,31 @@
 from typing import (Dict,
-                    List)
+                    List,
+                    Callable)
+import dash
 
-class layout:
-    def __init__(self, n_layout, data, disposition):
-        n_layout = n_layout
+class Dashboard:
+    def __init__(self, data):
+
+        #n_layout = n_layout
         self.data = data
+        self.right = {}
+        self.left = {}
+        self.mid = {}
 
-    def add(self, params):
-        lay=0
+    def available(self):
+        next = 0
+
+    def add_plot(self, plot: Callable, **params):
+        mid = {}
+
+    def add_plot_right(self):
+        right = {}
+
+    def add_plot_left(self):
+        right = {}
+
+    def run_app(self):
+        app = dash.Dash(__name__)
+        app.layout()
+
 
