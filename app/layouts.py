@@ -18,10 +18,10 @@ class Dashboard:
     def add_plot(self, plot: Callable, **params):
         mid = {}
 
-    def add_plot_right(self):
+    def add_plot_right(self, plot: Callable, **params):
         right = {}
 
-    def add_plot_left(self):
+    def add_plot_left(self, plot: Callable, **params):
         right = {}
 
     def run_app(self):
