@@ -1,17 +1,20 @@
 from typing import (Dict,
                     List,
                     Callable,
-                    Literal)
+                    Literal,
+                    )
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
+import plotly
 from dash.dependencies import Input, Output
 import pandas as pd
 import plotly.express as px
-
+Figure = plotly.graph_objs.Figure
 
 class Dashboard:
 
+    # dataframe or dictionnary ? add bellow
     def __init__(self, data):
         #n_layout = n_layout
         self.data = data
@@ -26,14 +29,15 @@ class Dashboard:
     def available(self):
         next = 0 # coming soon...
 
-    # this function would be useful later when dropdowns are added
 
-    def add_plot_mid(self, plot: Callable, id: str, params: Dict):
+    # fix plot here ... allow to add parameters
+    def add_plot_mid(self, plot: Figure, id: str):
+        self._close_past_layouts(left=self.left_layout, right=self.right_layout)
         #mid = {}
         if id in self.all_ids:
             raise AttributeError("the ID is already taken, please choose another one")
-
-        fig = plot(self.data, **params)
+        print(id)
+        fig = plot
         self.figures[id] = fig
 
         graph = dcc.Graph(
@@ -42,25 +46,49 @@ class Dashboard:
 
         self.all_ids.append(id)
         self.mid_layout.append(graph)
+
+        print('mid layout contains : ', self.mid_layout)
         #self.mid_layout.append(html.Br())
 
     def add_plot_right(self, plot: Callable, **params):
-        right = {}
+        #right = {}
+        self._close_past_layouts(left=self.left_layout, mid=self.mid_layout)
+
 
     def add_plot_left(self, plot: Callable, **params):
-        right = {}
+        #left = {}
+        self._close_past_layouts(mid=self.mid_layout, right=self.right_layout)
+
 
     def add_inter(self, output: List, input: List):
         add = 0
 
 
     def run_app(self):
+        self._close_past_layouts(self, mid=self.mid_layout,
+                                 right=self.right_layout,
+                                 left=self.left_layout)
 
         app = dash.Dash(__name__)
         app.layout(html.Div(self.layout))
 
+    def _close_past_layouts(self, **kwargs):
 
-    def _close_div(self, x: List, where: Literal['mid', 'left', 'right']):
+        for i in kwargs:
+            if (i == 'mid') & (len(kwargs[i]) != 0):
+                self.layout.append(self._close_div(self.mid_layout, where='mid'))
+                self.mid_layout = []
+
+            if (i == 'left') & (len(kwargs[i]) != 0):
+                self.layout.append(self._close_div(self.left_layout, where='left'))
+                self.lest_layout = []
+
+            if (i == 'mid') & (len(kwargs[i]) != 0):
+                self.layout.append(self._close_div(self.right_layout, where='right'))
+                self.right_layout = []
+
+    # this function would be useful later when dropdowns are added
+    def _close_div(self, x: List, where: str = 'mid'):
 
         if where not in ['mid', 'right', 'left']:
             raise AttributeError("where parameter should be equal to mid, left or right")
@@ -75,18 +103,5 @@ class Dashboard:
             return html.Div(x, style={'width': '49%', 'float': 'right', 'display': 'inline-block'})
 
     # function to optimize with the top one
-    def _close_past_layouts(self, **kwargs):
 
-        for i in kwargs:
-            if (i == 'mid') & (len(kwargs[i]) != 0):
-                self.layout.append(self._close_div(self.mid_layout, where = 'mid'))
-                self.mid_layout = []
-
-            if (i == 'left') & (len(kwargs[i]) != 0):
-                self.layout.append(self._close_div(self.left_layout, where = 'left'))
-                self.lest_layout = []
-
-            if (i == 'mid') & (len(kwargs[i]) != 0):
-                self.layout.append(self._close_div(self.right_layout, where = 'right'))
-                self.right_layout = []
 
