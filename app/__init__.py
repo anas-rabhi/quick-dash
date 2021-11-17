@@ -1,1 +1,1 @@
-from layouts import Dashboard
+from app.layouts import *
