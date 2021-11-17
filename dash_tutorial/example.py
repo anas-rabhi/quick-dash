@@ -1,6 +1,6 @@
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import pandas as pd
 import plotly.express as px
 
@@ -65,7 +65,7 @@ app.layout = html.Div([
         value=df['Year'].max(),
         marks={str(year): str(year) for year in df['Year'].unique()},
         step=None
-    ), style={'width': '49%', 'padding': '0px 20px 20px 20px'})
+    ))
 ])
 
 
