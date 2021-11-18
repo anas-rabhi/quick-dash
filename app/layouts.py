@@ -10,15 +10,15 @@ import plotly
 from dash.dependencies import Input, Output
 import pandas as pd
 import plotly.express as px
-Figure = plotly.graph_objs.Figure
+
 
 class Dashboard:
 
     # dataframe or dictionnary ? add bellow
     def __init__(self, data):
-        #n_layout = n_layout
+        # n_layout = n_layout
         self.data = data
-        self.layout =  []
+        self.layout = []
         self.mid_layout = []
         self.right_layout = []
         self.left_layout = []
@@ -27,17 +27,16 @@ class Dashboard:
         self.all_ids = []
 
     def available(self):
-        next = 0 # coming soon...
+        next = 0  # coming soon...
 
-
-    # fix plot here ... allow to add parameters
-    def add_plot_mid(self, plot: Figure, id: str):
+    # fix plot here ... allow to add parameters, # todo
+    def add_plot_mid(self, plot: Callable, id: str, **params):
         self._close_past_layouts(left=self.left_layout, right=self.right_layout)
-        #mid = {}
+        # mid = {}
         if id in self.all_ids:
             raise AttributeError("the ID is already taken, please choose another one")
         print(id)
-        fig = plot
+        fig = plot(self.data, **params)
         self.figures[id] = fig
 
         graph = dcc.Graph(
@@ -47,22 +46,18 @@ class Dashboard:
         self.all_ids.append(id)
         self.mid_layout.append(graph)
 
-        print('mid layout contains : ', self.mid_layout)
-        #self.mid_layout.append(html.Br())
+        # self.mid_layout.append(html.Br())
 
     def add_plot_right(self, plot: Callable, **params):
-        #right = {}
+        # right = {}
         self._close_past_layouts(left=self.left_layout, mid=self.mid_layout)
 
-
     def add_plot_left(self, plot: Callable, **params):
-        #left = {}
+        # left = {}
         self._close_past_layouts(mid=self.mid_layout, right=self.right_layout)
-
 
     def add_inter(self, output: List, input: List):
         add = 0
-
 
     def run_app(self):
         self._close_past_layouts(self, mid=self.mid_layout,
@@ -103,5 +98,3 @@ class Dashboard:
             return html.Div(x, style={'width': '49%', 'float': 'right', 'display': 'inline-block'})
 
     # function to optimize with the top one
-
-
