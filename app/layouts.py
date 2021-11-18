@@ -32,16 +32,19 @@ class Dashboard:
         self.all_layouts = []
         self.all_ids = []
 
+    # show current figures --> jupyter, plot all
+    def show(self):
+        i = 2
+
     def available(self):
         next = 0  # coming soon...
 
     # fix plot here ... allow to add parameters, # todo
     def add_plot_mid(self, plot: Callable, id: str, **params):
-        self._close_past_layouts(left=self.left_layout, right=self.right_layout)
         # mid = {}
         if id in self.all_ids:
             raise AttributeError("the ID is already taken, please choose another one")
-        print(id)
+        self._close_past_layouts(left=self.left_layout, right=self.right_layout)
         fig = plot(self.data, **params)
         self.figures[id] = fig
 
@@ -54,9 +57,63 @@ class Dashboard:
 
         # self.mid_layout.append(html.Br())
 
+    def add_plot(self, where: str, plot: Callable, id: str, **params):
+
+        if id in self.all_ids:
+            raise AttributeError("the ID is already taken, please choose another one")
+
+        if where not in ['mid', 'right', 'left']:
+            raise AttributeError("where parameter should be equal to mid, left or right")
+
+        self.all_ids.append(id)
+
+        fig = plot(self.data, **params)
+        self.figures[id] = fig
+
+        graph = dcc.Graph(
+            id=id,
+            figure=self.figures[id])
+
+        if where == 'mid':
+
+            if len(self.mid_layout) != 0:
+                self.mid_layout.append(html.Br())
+
+            self._close_past_layouts(left=self.left_layout, right=self.right_layout)
+            self.mid_layout.append(graph)
+
+        if where == 'left':
+
+            if len(self.left_layout) != 0:
+                self.left_layout.append(html.Br())
+
+            self._close_past_layouts(mid=self.mid_layout, right=self.right_layout)
+            self.left_layout.append(graph)
+
+        if where == 'right':
+
+            if len(self.right_layout) != 0:
+                self.right_layout.append(html.Br())
+
+            self._close_past_layouts(left=self.left_layout, mid=self.mid_layout)
+            self.right_layout.append(graph)
+
     def add_plot_right(self, plot: Callable, **params):
-        # right = {}
+        if id in self.all_ids:
+            raise AttributeError("the ID is already taken, please choose another one")
+
         self._close_past_layouts(left=self.left_layout, mid=self.mid_layout)
+        fig = plot(self.data, **params)
+        self.figures[id] = fig
+
+        graph = dcc.Graph(
+            id=id,
+            figure=self.figures[id])
+
+        self.all_ids.append(id)
+        self.right_layout.append(graph)
+
+        # self.mid_layout.append(html.Br())
 
     def add_plot_left(self, plot: Callable, **params):
         # left = {}
