@@ -123,12 +123,13 @@ class Dashboard:
         add = 0
 
     def run_app(self):
-        self._close_past_layouts(self, mid=self.mid_layout,
+        self._close_past_layouts(mid=self.mid_layout,
                                  right=self.right_layout,
                                  left=self.left_layout)
-
+        print('ok')
         app = dash.Dash(__name__)
-        app.layout(html.Div(self.layout))
+        print('ok')
+        app.layout = html.Div(self.layout)
 
     def _close_past_layouts(self, **kwargs):
 
@@ -139,9 +140,9 @@ class Dashboard:
 
             if (i == 'left') & (len(kwargs[i]) != 0):
                 self.layout.append(self._close_div(self.left_layout, where='left'))
-                self.lest_layout = []
+                self.left_layout = []
 
-            if (i == 'mid') & (len(kwargs[i]) != 0):
+            if (i == 'right') & (len(kwargs[i]) != 0):
                 self.layout.append(self._close_div(self.right_layout, where='right'))
                 self.right_layout = []
 
