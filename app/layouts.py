@@ -15,7 +15,13 @@ import plotly.express as px
 class Dashboard:
 
     # dataframe or dictionnary ? add bellow
-    def __init__(self, data):
+    def __init__(self, data: pd.DataFrame):
+        if isinstance(data, pd.DataFrame):
+            pass
+        else:
+            raise AttributeError("The data must be a Dataframe object, at least for now...")
+
+
         # n_layout = n_layout
         self.data = data
         self.layout = []
