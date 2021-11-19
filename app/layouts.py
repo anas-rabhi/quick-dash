@@ -39,22 +39,6 @@ class Dashboard:
     def available(self):
         next = 0  # coming soon...
 
-    # fix plot here ... allow to add parameters, # todo
-    def add_plot_mid(self, plot: Callable, id: str, **params):
-        # mid = {}
-        if id in self.all_ids:
-            raise AttributeError("the ID is already taken, please choose another one")
-        self._close_past_layouts(left=self.left_layout, right=self.right_layout)
-        fig = plot(self.data, **params)
-        self.figures[id] = fig
-
-        graph = dcc.Graph(
-            id=id,
-            figure=self.figures[id])
-
-        self.all_ids.append(id)
-        self.mid_layout.append(graph)
-
         # self.mid_layout.append(html.Br())
 
     def add_plot(self, where: str, plot: Callable, id: str, **params):
@@ -76,27 +60,21 @@ class Dashboard:
 
         if where == 'mid':
 
-            if len(self.mid_layout) != 0:
-                self.mid_layout.append(html.Br())
-
-            self._close_past_layouts(left=self.left_layout, right=self.right_layout)
             self.mid_layout.append(graph)
+            self._close_past_layouts(mid=self.mid_layout)
 
         if where == 'left':
 
-            if len(self.left_layout) != 0:
-                self.left_layout.append(html.Br())
-
-            self._close_past_layouts(mid=self.mid_layout, right=self.right_layout)
             self.left_layout.append(graph)
+            self._close_past_layouts(left=self.left_layout)
 
         if where == 'right':
 
-            if len(self.right_layout) != 0:
-                self.right_layout.append(html.Br())
-
-            self._close_past_layouts(left=self.left_layout, mid=self.mid_layout)
             self.right_layout.append(graph)
+            self._close_past_layouts(right=self.right_layout)
+
+    def close_current(self):
+        self._close_past_layouts(mid=self.layout, left=self.left_layout, right=self.right_layout)
 
     def add_plot_right(self, plot: Callable, **params):
         if id in self.all_ids:
@@ -123,9 +101,7 @@ class Dashboard:
         add = 0
 
     def run_app(self, port: int = 8050):
-        self._close_past_layouts(mid=self.mid_layout,
-                                 right=self.right_layout,
-                                 left=self.left_layout)
+
         print('ok')
         app = dash.Dash(__name__)
         print('ok')
@@ -148,16 +124,16 @@ class Dashboard:
                 self.right_layout = []
 
     # this function would be useful later when dropdowns are added
-    def _close_div(self, x: List, where: str = 'mid'):
+    def _close_div(self, x: List, where: str):
 
         if where not in ['mid', 'right', 'left']:
             raise AttributeError("where parameter should be equal to mid, left or right")
 
         if where == 'mid':
-            return html.Div(x)
+            return html.Div(x, style={'width': '100%', 'display': 'inline-block'})
 
         if where == 'left':
-            return html.Div(x, style={'width': '49%', 'float': 'left', 'display': 'inline-block'})
+            return html.Div(x, style={'width': '49%', 'display': 'inline-block'})
 
         if where == 'right':
             return html.Div(x, style={'width': '49%', 'float': 'right', 'display': 'inline-block'})
