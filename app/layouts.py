@@ -119,10 +119,10 @@ class Dashboard:
         # left = {}
         self._close_past_layouts(mid=self.mid_layout, right=self.right_layout)
 
-    def add_inter(self, output: List, input: List):
+    def add_inter(self, output: List = [], input: List = []):
         add = 0
 
-    def run_app(self):
+    def run_app(self, port: int = 8050):
         self._close_past_layouts(mid=self.mid_layout,
                                  right=self.right_layout,
                                  left=self.left_layout)
@@ -130,6 +130,7 @@ class Dashboard:
         app = dash.Dash(__name__)
         print('ok')
         app.layout = html.Div(self.layout)
+        app.run_server(debug=True, port=port)
 
     def _close_past_layouts(self, **kwargs):
 
