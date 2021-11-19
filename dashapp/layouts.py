@@ -15,7 +15,7 @@ import plotly.express as px
 class Dashboard:
 
     # dataframe or dictionnary ? add bellow
-    def __init__(self, data: pd.DataFrame, title: str = 'Quick Dash App'):
+    def __init__(self, data: pd.DataFrame, title: str = ' '):
         if isinstance(data, pd.DataFrame):
             pass
         else:
