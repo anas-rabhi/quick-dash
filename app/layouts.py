@@ -15,7 +15,7 @@ import plotly.express as px
 class Dashboard:
 
     # dataframe or dictionnary ? add bellow
-    def __init__(self, data: pd.DataFrame):
+    def __init__(self, data: pd.DataFrame, title: str = 'Quick Dash App'):
         if isinstance(data, pd.DataFrame):
             pass
         else:
@@ -31,7 +31,7 @@ class Dashboard:
         self.figures = {}
         self.all_layouts = []
         self.all_ids = []
-
+        self.layout.append(html.H1(children=title))
     # show current figures --> jupyter, plot all
     def show(self):
         i = 2
@@ -102,10 +102,9 @@ class Dashboard:
 
     def run_app(self, port: int = 8050):
 
-        print('ok')
         app = dash.Dash(__name__)
-        print('ok')
         app.layout = html.Div(self.layout)
+
         app.run_server(debug=True, port=port)
 
     def _close_past_layouts(self, **kwargs):
