@@ -10,7 +10,7 @@ import plotly
 from dash.dependencies import Input, Output
 import pandas as pd
 import plotly.express as px
-
+from functions import *
 
 class Dashboard:
 
@@ -29,6 +29,7 @@ class Dashboard:
         self.right_layout = []
         self.left_layout = []
         self.figures = {}
+        self.filters = {}
         self.all_layouts = []
         self.all_ids = []
         self.layout.append(html.H1(children=title))
@@ -73,29 +74,34 @@ class Dashboard:
             self.right_layout.append(graph)
             self._close_past_layouts(right=self.right_layout)
 
-    def close_current(self):
-        self._close_past_layouts(mid=self.layout, left=self.left_layout, right=self.right_layout)
+    def add_filter(self, where: str, ftype: str, var: str, id: str, **params):
 
-    def add_plot_right(self, plot: Callable, **params):
         if id in self.all_ids:
             raise AttributeError("the ID is already taken, please choose another one")
 
-        self._close_past_layouts(left=self.left_layout, mid=self.mid_layout)
-        fig = plot(self.data, **params)
-        self.figures[id] = fig
-
-        graph = dcc.Graph(
-            id=id,
-            figure=self.figures[id])
+        if where not in ['mid', 'right', 'left']:
+            raise AttributeError("where parameter should be equal to mid, left or right")
 
         self.all_ids.append(id)
-        self.right_layout.append(graph)
 
-        # self.mid_layout.append(html.Br())
+        fig = define_params(self.data, ftype=ftype, var=var, id=id, **params)
+        self.filters[id] = fig
 
-    def add_plot_left(self, plot: Callable, **params):
-        # left = {}
-        self._close_past_layouts(mid=self.mid_layout, right=self.right_layout)
+        if where == 'mid':
+            self.mid_layout.append(fig)
+            self._close_past_layouts(mid=self.mid_layout)
+
+        if where == 'left':
+            self.left_layout.append(fig)
+            self._close_past_layouts(left=self.left_layout)
+
+        if where == 'right':
+            self.right_layout.append(fig)
+            self._close_past_layouts(right=self.right_layout)
+
+    def close_current(self):
+        self._close_past_layouts(mid=self.layout, left=self.left_layout, right=self.right_layout)
+
 
     def add_inter(self, output: List = [], input: List = []):
         add = 0

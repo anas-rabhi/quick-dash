@@ -1,5 +1,5 @@
 from dashapp import *
-
+import pandas as pd
 # add some data
 data = pd.DataFrame({'a': ['c', 'd'], 'b': [20, 40]})
 

@@ -3,6 +3,7 @@ import dash_html_components as html
 import dash_core_components as dcc
 from dash.dependencies import Input, Output
 from typing import Dict, List, Callable
+import pandas as pd
 
 filters = {
     'checklist': dcc.Checklist, #    labelStyle={'display': 'inline-block'}
@@ -15,7 +16,7 @@ filters = {
 }
 
 
-def define_params(data, ftype: str, var: str, id: str, value: List = None,**params):
+def define_params(data: pd.DataFrame, ftype: str, var: str, id: str, **params):
     displayed = filters[ftype]
 
     param = {}
@@ -25,8 +26,12 @@ def define_params(data, ftype: str, var: str, id: str, value: List = None,**para
 
     if ftype in ['checkbox', 'checklist', 'dropdown']:
 
+        if 'value' in params:
+            param['value'] = params['value']
+        else:
+            params['value'] = None
+
         param['options'] = [{'label': i, 'value': i} for i in data[var].tolist()]
-        param['value'] = value
         param['id'] = id
 
         return displayed(**param, **params)
@@ -34,3 +39,5 @@ def define_params(data, ftype: str, var: str, id: str, value: List = None,**para
     if type in ['slider', 'range_slider']:
         pass
 
+#data = pd.DataFrame({'a': ['c', 'd'], 'b': [20, 40]})
+#define_params(data, 'checklist', 'a', '555a')
