@@ -22,13 +22,21 @@ def define_params(data: pd.DataFrame, ftype: str, var: str, id: str, **params):
     param = {}
 
     if type in ['slider', 'range_slider']:
-        pass
+
+        if 'value' not in params:
+            params['value'] = [data[var].min(),
+                               data[var].max()]
+
+        param['id'] = id
+        param['min'] = data[var].min()
+        param['max'] = data[var].max()
+        param['step'] = 0.5 #to change
+
+        return displayed(**param, **params)
 
     if ftype in ['checkbox', 'checklist', 'dropdown']:
 
-        if 'value' in params:
-            param['value'] = params['value']
-        else:
+        if 'value' not in params:
             params['value'] = None
 
         param['options'] = [{'label': i, 'value': i} for i in data[var].tolist()]
@@ -36,8 +44,15 @@ def define_params(data: pd.DataFrame, ftype: str, var: str, id: str, **params):
 
         return displayed(**param, **params)
 
-    if type in ['slider', 'range_slider']:
-        pass
+    if type in ['date_range']:
+
+        param['id'] = id
+        param['min_date_allowed'] = data[var].min()
+        param['max_date_allowed'] = data[var].min()
+        param['initial_visible_month'] = data[var].min()
+
+        return displayed(**param, **params)
+
 
 #data = pd.DataFrame({'a': ['c', 'd'], 'b': [20, 40]})
 #define_params(data, 'checklist', 'a', '555a')
