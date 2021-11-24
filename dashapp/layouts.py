@@ -20,6 +20,7 @@ class Dashboard:
             pass
         else:
             raise AttributeError("The data must be a Dataframe object, at least for now...")
+        self.app = dash.Dash(__name__)
 
 
         # n_layout = n_layout
@@ -28,6 +29,7 @@ class Dashboard:
         self.mid_layout = []
         self.right_layout = []
         self.left_layout = []
+        self.graphs = {}
         self.figures = {}
         self.filters = {}
         self.all_layouts = []
@@ -51,6 +53,8 @@ class Dashboard:
             raise AttributeError("where parameter should be equal to mid, left or right")
 
         self.all_ids.append(id)
+
+        self.graphs[id] = plot
 
         fig = plot(self.data, **params)
         self.figures[id] = fig
@@ -99,6 +103,24 @@ class Dashboard:
             self.right_layout.append(fig)
             self._close_past_layouts(right=self.right_layout)
 
+    def add_callback(self, input_id: List, output_id: List, vars: List): # vars =~ input
+
+        @self.app.callback(
+            [dash.dependencies.Output(i, 'figure') for i in output_id],
+            [dash.dependencies.Input(i, 'value') for i in input_id])
+        def update_graph(*input_id):
+
+            df = self.data.copy()
+            for i, j in enumerate(vars):
+                if input_id[i] is not None:
+                    df = df[df[j].isin(input_id[i])]
+
+            fig = self.graph[output_id[0]]
+            fig = fig(df, )
+            dff = df[df['Year'] == year_value]
+
+
+
     def close_current(self):
         self._close_past_layouts(mid=self.layout, left=self.left_layout, right=self.right_layout)
 
@@ -108,10 +130,10 @@ class Dashboard:
 
     def run_app(self, port: int = 8050):
 
-        app = dash.Dash(__name__)
-        app.layout = html.Div(self.layout)
 
-        app.run_server(debug=True, port=port)
+        self.app.layout = html.Div(self.layout)
+
+        self.app.run_server(debug=True, port=port)
 
     def _close_past_layouts(self, **kwargs):
 
