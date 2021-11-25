@@ -36,8 +36,10 @@ class Dashboard:
         self.all_ids = []
         self.layout.append(html.H1(children=title))
     # show current figures --> jupyter, plot all
-    def show(self):
-        i = 2
+
+    @staticmethod
+    def show():
+        return show()
 
     def available(self):
         next = 0  # coming soon...
@@ -115,9 +117,9 @@ class Dashboard:
                 if input_id[i] is not None:
                     df = df[df[j].isin(input_id[i])]
 
-            fig = self.graph[output_id[0]]
-            fig = fig(df, )
-            dff = df[df['Year'] == year_value]
+            #fig = self.graph[output_id[0]]
+            #fig = fig(df, )
+            #dff = df[df['Year'] == year_value]
 
 
 
@@ -166,3 +168,4 @@ class Dashboard:
             return html.Div(x, style={'width': '49%', 'float': 'right', 'display': 'inline-block'})
 
     # function to optimize with the top one
+
