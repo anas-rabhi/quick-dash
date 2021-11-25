@@ -1,13 +1,6 @@
 # Quick Dash 
 
-The purpose of this work is to build quick dash dashboards
-without writing all the dash "html" code and without having
-to organize the visualizations. 
-The dashboard will be also deployable
-pretty easy on Docker, in order to be able to share it externally.
-My first motivation is of course save time and be able to 
-share the dashboard online.
-
+Low-code and quick dash dashboards.
 
 # Installation
 
