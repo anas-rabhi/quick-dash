@@ -15,6 +15,8 @@ filters = {
     'slider': dcc.Slider
 }
 
+def show():
+    print(filters)
 
 def define_params(data: pd.DataFrame, ftype: str, var: str, id: str, **params):
     displayed = filters[ftype]

@@ -41,10 +41,11 @@ my_app.add_plot('left', px.bar, id='123', x='Brand', y='Price') # px.bar is the 
 my_app.add_plot('right', px.bar, id='123', x='Brand', y='Battery') # px.bar is the barplot from plotly.
 
 # Add middle plot
-my_app.add_plot('right', px.scatter, id='123', x='Battery', y='Battery', color='Brand') # px.bar is the barplot from plotly.
+my_app.add_plot('mid', px.bar, id='123', x='Brand', y='Battery') # px.bar is the barplot from plotly.
 
 # Then start the app :
+my_app.run_app()
 
 ```
 
-## Filter available 
+
