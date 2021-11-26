@@ -1,13 +1,14 @@
 from typing import (Dict,
                     List,
                     Callable,
-                    Literal,
+                    Literal
                     )
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
 import plotly
-from dash.dependencies import Input, Output
+from dash.dependencies import (Input,
+                               Output)
 import pandas as pd
 import plotly.express as px
 from functions import *
