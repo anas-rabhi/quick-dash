@@ -5,8 +5,9 @@ Low-code and quick dash dashboards.
 # Installation
 
 ```shell
-pip install git+https://github.com/anas-rabhi/quick-dash
+pip install git+https://github.com/anas-rabhi/quick-dash.git
 ```
+
 ## Getting Started
 
 **Important** : Dash uses plotly for the visualizations. For more information 
@@ -28,10 +29,10 @@ my_app = Dashboard(data, title='My App')
 my_app.add_plot('left', px.bar, id='123', x='Brand', y='Price') # px.bar is the barplot from plotly.
 
 # Add right plot
-my_app.add_plot('right', px.bar, id='123', x='Brand', y='Battery') # px.bar is the barplot from plotly.
+my_app.add_plot('right', px.bar, id='1234', x='Brand', y='Battery') # px.bar is the barplot from plotly.
 
 # Add middle plot
-my_app.add_plot('mid', px.bar, id='123', x='Brand', y='Battery') # px.bar is the barplot from plotly.
+my_app.add_plot('mid', px.bar, id='12345', x='Brand', y='Battery') # px.bar is the barplot from plotly.
 
 # Then start the app :
 my_app.run_app()
