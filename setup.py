@@ -12,7 +12,7 @@ setup(
     python_requires='>=3.7.0',
     url='https://github.com/anas-rabhi/quick-dash',
     install_requires=required,
-    packages=find_packages(include=["dashapp*", "dashapp.*"]),
+    packages=find_packages(include=["dashapp*"]),
     include_package_data=True,
     license='MIT'
 )
