@@ -9,9 +9,6 @@ pip install git+https://github.com/anas-rabhi/quick-dash
 ```
 ## Getting Started
 
-In this example, I initiate the class, then I plot one graph at the left 
-another one at the right then one at the middle. Then start the app.
-
 **Important** : Dash uses plotly for the visualizations. For more information 
 visit plotly doc: https://plotly.com/python/
 
