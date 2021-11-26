@@ -1,7 +1,6 @@
 from typing import (Dict,
                     List,
-                    Callable,
-                    Literal
+                    Callable
                     )
 import dash
 import dash_html_components as html
