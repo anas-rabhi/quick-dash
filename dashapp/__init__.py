@@ -1,2 +1,2 @@
-from dashapp.layouts import *
 from dashapp.functions import *
+from dashapp.layouts import *

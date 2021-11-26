@@ -10,7 +10,7 @@ from dash.dependencies import (Input,
                                Output)
 import pandas as pd
 import plotly.express as px
-from functions import *
+from .functions import *
 
 class Dashboard:
 
