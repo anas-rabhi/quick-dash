@@ -4,7 +4,7 @@ with open("requirements.txt") as f:
     required = f.read().splitlines()
 
 setup(
-    name='quick-dash',
+    name='qdash',
     version='0.0.0',
     description='Build quick dash apps',
     author='Anas Rabhi',
@@ -12,7 +12,7 @@ setup(
     python_requires='>=3.7.0',
     url='https://github.com/anas-rabhi/quick-dash',
     install_requires=required,
-    packages=find_packages(include=["dashapp*"]),
+    packages=find_packages(include=["dashapp*", "dashapp.*"]),
     include_package_data=True,
     license='MIT'
 )
