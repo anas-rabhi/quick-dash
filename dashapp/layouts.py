@@ -3,8 +3,8 @@ from typing import (Dict,
                     Callable
                     )
 import dash
-import dash_html_components as html
-import dash_core_components as dcc
+from dash import html
+from dash import dcc
 import plotly
 from dash.dependencies import (Input,
                                Output)
@@ -34,6 +34,7 @@ class Dashboard:
         self.filters = {}
         self.all_layouts = []
         self.all_ids = []
+        self.filter_id_var = {}
         self.layout.append(html.H1(children=title))
     # show current figures --> jupyter, plot all
 
@@ -89,7 +90,7 @@ class Dashboard:
             raise AttributeError("where parameter should be equal to mid, left or right")
 
         self.all_ids.append(id)
-
+        self.filter_id_var[id] = var
         fig = define_params(self.data, ftype=ftype, var=var, id=id, **params)
         self.filters[id] = fig
 
@@ -107,10 +108,11 @@ class Dashboard:
 
     def add_callback(self, input_id: List, output_id: List, vars: List): # vars =~ input
 
+        vars = [self.filter_id_var[i] for i in input_id]
         @self.app.callback(
             [dash.dependencies.Output(i, 'figure') for i in output_id],
             [dash.dependencies.Input(i, 'value') for i in input_id])
-        def update_graph(*input_id):
+        def update_graph(*vars):
 
             df = self.data.copy()
             for i, j in enumerate(vars):
@@ -132,9 +134,7 @@ class Dashboard:
 
     def run_app(self, port: int = 8050):
 
-
         self.app.layout = html.Div(self.layout)
-
         self.app.run_server(debug=True, port=port)
 
     def _close_past_layouts(self, **kwargs):
