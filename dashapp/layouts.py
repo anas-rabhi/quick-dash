@@ -106,39 +106,27 @@ class Dashboard:
             self.right_layout.append(fig)
             self._close_past_layouts(right=self.right_layout)
 
-    def add_callback(self, input_id: List, output_id: List): # vars =~ input
+    def add_callback(self, input_id: List, output_id: str): # vars =~ input
 
 
         vars = [self.filter_id_var[i] for i in input_id]
-        inputs = [self.filter_id_var[i] for i in input_id]
 
-        inp = [Input(i, 'value') for i in input_id]
-        out = [Output(i, 'figure') for i in output_id]
+        inputs_filters = [Input(i, 'value') for i in input_id]
+        outputs = [Output(i, 'figure') for i in output_id]
         @self.app.callback(
-            *out,
-            *inp)
+            *outputs,
+            *inputs_filters)
         def update_graph(*inputs):
             joint = zip(input_id, vars, inputs)
             df = self.data.copy()
 
             for i in joint:
-                print(i)
                 if i[2] is not None:
                     df = df[df[i[1]].isin([i[2]])]
-                    print(df)
 
             plot = self.graphs[output_id[0]][0]
             fig = px.bar(df, **self.graphs[output_id[0]][1])
-            print(fig)
             return fig
-
-
-    def close_current(self):
-        self._close_past_layouts(mid=self.layout, left=self.left_layout, right=self.right_layout)
-
-
-    def add_inter(self, output: List = [], input: List = []):
-        add = 0
 
     def run_app(self, port: int = 8050):
 
