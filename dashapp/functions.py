@@ -35,7 +35,7 @@ def define_params(data: pd.DataFrame, ftype: str, var: str, id: str, **params):
 
         return displayed(**param, **params)
 
-    if ftype in ['checkbox', 'checklist', 'dropdown']:
+    if ftype in ['dropdown']:
 
         if 'value' not in params:
             params['value'] = None
