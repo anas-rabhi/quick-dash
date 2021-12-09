@@ -57,7 +57,7 @@ class Dashboard:
 
         self.all_ids.append(id)
 
-        self.graphs[id] = plot
+        self.graphs[id] = [plot, params]
 
         fig = plot(self.data, **params)
         self.figures[id] = fig
@@ -106,23 +106,31 @@ class Dashboard:
             self.right_layout.append(fig)
             self._close_past_layouts(right=self.right_layout)
 
-    def add_callback(self, input_id: List, output_id: List, vars: List): # vars =~ input
+    def add_callback(self, input_id: List, output_id: List): # vars =~ input
+
 
         vars = [self.filter_id_var[i] for i in input_id]
+        inputs = [self.filter_id_var[i] for i in input_id]
+
+        inp = [Input(i, 'value') for i in input_id]
+        out = [Output(i, 'figure') for i in output_id]
         @self.app.callback(
-            [dash.dependencies.Output(i, 'figure') for i in output_id],
-            [dash.dependencies.Input(i, 'value') for i in input_id])
-        def update_graph(*vars):
-
+            *out,
+            *inp)
+        def update_graph(*inputs):
+            joint = zip(input_id, vars, inputs)
             df = self.data.copy()
-            for i, j in enumerate(vars):
-                if input_id[i] is not None:
-                    df = df[df[j].isin(input_id[i])]
 
-            #fig = self.graph[output_id[0]]
-            #fig = fig(df, )
-            #dff = df[df['Year'] == year_value]
+            for i in joint:
+                print(i)
+                if i[2] is not None:
+                    df = df[df[i[1]].isin([i[2]])]
+                    print(df)
 
+            plot = self.graphs[output_id[0]][0]
+            fig = px.bar(df, **self.graphs[output_id[0]][1])
+            print(fig)
+            return fig
 
 
     def close_current(self):
