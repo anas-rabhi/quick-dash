@@ -106,27 +106,31 @@ class Dashboard:
             self.right_layout.append(fig)
             self._close_past_layouts(right=self.right_layout)
 
-    def add_callback(self, input_id: List, output_id: str): # vars =~ input
+    def add_callback(self, input_id: List, output_id: List): # vars =~ input
 
 
         vars = [self.filter_id_var[i] for i in input_id]
 
         inputs_filters = [Input(i, 'value') for i in input_id]
         outputs = [Output(i, 'figure') for i in output_id]
-        @self.app.callback(
-            *outputs,
-            *inputs_filters)
-        def update_graph(*inputs):
-            joint = zip(input_id, vars, inputs)
-            df = self.data.copy()
 
-            for i in joint:
-                if i[2] is not None:
-                    df = df[df[i[1]].isin([i[2]])]
 
-            plot = self.graphs[output_id[0]][0]
-            fig = px.bar(df, **self.graphs[output_id[0]][1])
-            return fig
+# fix this part
+        for out in outputs:
+            @self.app.callback(
+                *[out],
+                *inputs_filters)
+            def update_graph(*inputs):
+                joint = zip(input_id, vars, inputs)
+                df = self.data.copy()
+
+                for i in joint:
+                    if i[2] is not None:
+                        df = df[df[i[1]].isin([i[2]])]
+
+                plot = self.graphs[output_id[0]][0]
+                fig = px.bar(df, **self.graphs[output_id[0]][1])
+                return fig
 
     def run_app(self, port: int = 8050):
 

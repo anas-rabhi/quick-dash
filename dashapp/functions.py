@@ -14,6 +14,9 @@ filters = {
     'slider': dcc.Slider
 }
 
+######## ADD checkbox & radioitems
+######## text box output
+
 def show():
     print(filters)
 
