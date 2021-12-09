@@ -40,7 +40,7 @@ def define_params(data: pd.DataFrame, ftype: str, var: str, id: str, **params):
         if 'value' not in params:
             params['value'] = None
 
-        param['options'] = [{'label': i, 'value': i} for i in data[var].tolist()]
+        param['options'] = [{'label': i, 'value': i} for i in data[var].unique().tolist()]
         param['id'] = id
 
         return displayed(**param, **params)
