@@ -44,14 +44,6 @@ class Dashboard:
         self.layout.append(html.H1(children=title))
     # show current figures --> jupyter, plot all
 
-    @staticmethod
-    def show():
-        return show()
-
-    def available(self):
-        next = 0  # coming soon...
-
-        # self.mid_layout.append(html.Br())
 
     def add_plot(self, where: str, plot: Callable, id: str, **params):
         """
@@ -152,17 +144,19 @@ class Dashboard:
                 if i[2] not in [None, []]:
                     df = df[df[i[1]].isin(list(i[2]))]
 
-            fig = []
+            figs = []
             for ids in output_id:
                 plot = self.graphs[ids][0]
-                fig.append(plot(df, **self.graphs[ids][1]))
+                figs.append(plot(df, **self.graphs[ids][1]))
 
 
-            return *fig,
+            return *figs,
+
+        #update_graph.__name__ = f'update_graph_{input_id[0]}'
 
     def own(self, where: str, vizual: Callable, var: str, id: str, **params):
         """
-        Add a dash component that is not implemented here.
+        Free method to add a dash component other than graphs or filters.
         :param where:
         :param vizual:
         :param var:
