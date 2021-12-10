@@ -44,6 +44,12 @@ class Dashboard:
         self.layout.append(html.H1(children=title))
     # show current figures --> jupyter, plot all
 
+    def get_info(self):
+        print(f'Number of graphs displayed : {len(self.graphs)}')
+        print(f'Number of filters displayed : {len(self.filters)}')
+        print(f'Total elements displayed : {len(self.all_ids)}')
+
+        # self.mid_layout.append(html.Br())
 
     def add_plot(self, where: str, plot: Callable, id: str, **params):
         """
