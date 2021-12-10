@@ -13,9 +13,15 @@ import plotly.express as px
 from .functions import *
 
 class Dashboard:
-
+    """
+    """
     # dataframe or dictionnary ? add bellow
     def __init__(self, data: pd.DataFrame, title: str = ' '):
+        """
+
+        :param data:
+        :param title:
+        """
         if isinstance(data, pd.DataFrame):
             pass
         else:
@@ -48,7 +54,13 @@ class Dashboard:
         # self.mid_layout.append(html.Br())
 
     def add_plot(self, where: str, plot: Callable, id: str, **params):
-
+        """
+        :param where:
+        :param plot:
+        :param id:
+        :param params:
+        :return:
+        """
         if id in self.all_ids:
             raise AttributeError("the ID is already taken, please choose another one")
 
@@ -82,6 +94,15 @@ class Dashboard:
             self._close_past_layouts(right=self.right_layout)
 
     def add_filter(self, where: str, ftype: str, var: str, id: str, **params):
+        """
+
+        :param where:
+        :param ftype:
+        :param var:
+        :param id:
+        :param params:
+        :return:
+        """
 
         if id in self.all_ids:
             raise AttributeError("the ID is already taken, please choose another one")
@@ -107,7 +128,12 @@ class Dashboard:
             self._close_past_layouts(right=self.right_layout)
 
     def add_callback(self, input_id: List, output_id: List): # vars =~ input
+        """
 
+        :param input_id:
+        :param output_id:
+        :return:
+        """
 
         vars = [self.filter_id_var[i] for i in input_id]
 
@@ -133,11 +159,21 @@ class Dashboard:
                 return fig
 
     def run_app(self, port: int = 8050):
+        """
+
+        :param port:
+        :return:
+        """
 
         self.app.layout = html.Div(self.layout)
         self.app.run_server(debug=True, port=port)
 
     def _close_past_layouts(self, **kwargs):
+        """
+
+        :param kwargs:
+        :return:
+        """
 
         for i in kwargs:
             if (i == 'mid') & (len(kwargs[i]) != 0):
@@ -154,6 +190,12 @@ class Dashboard:
 
     # this function would be useful later when dropdowns are added
     def _close_div(self, x: List, where: str):
+        """
+
+        :param x:
+        :param where:
+        :return:
+        """
 
         if where not in ['mid', 'right', 'left']:
             raise AttributeError("where parameter should be equal to mid, left or right")
