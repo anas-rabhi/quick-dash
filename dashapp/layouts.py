@@ -141,22 +141,36 @@ class Dashboard:
         outputs = [Output(i, 'figure') for i in output_id]
 
 
-# fix this part
-        for out in outputs:
-            @self.app.callback(
-                *[out],
-                *inputs_filters)
-            def update_graph(*inputs):
-                joint = zip(input_id, vars, inputs)
-                df = self.data.copy()
+        @self.app.callback(
+            *outputs,
+            *inputs_filters)
+        def update_graph(*inputs):
+            joint = zip(input_id, vars, inputs)
+            df = self.data.copy()
 
-                for i in joint:
-                    if i[2] is not None:
-                        df = df[df[i[1]].isin([i[2]])]
+            for i in joint:
+                if i[2] is not None:
+                    df = df[df[i[1]].isin([i[2]])]
 
-                plot = self.graphs[output_id[0]][0]
-                fig = px.bar(df, **self.graphs[output_id[0]][1])
-                return fig
+            fig = []
+            for ids in output_id:
+                plot = self.graphs[ids][0]
+                fig.append(plot(df, **self.graphs[ids][1]))
+
+
+            return fig[0]
+
+    def own(self, where: str, vizual: Callable, var: str, id: str, **params):
+        """
+        Add a dash component that is not implemented here.
+        :param where:
+        :param vizual:
+        :param var:
+        :param id:
+        :param params:
+        :return:
+        """
+        return 0
 
     def run_app(self, port: int = 8050):
         """
