@@ -158,7 +158,7 @@ class Dashboard:
                 fig.append(plot(df, **self.graphs[ids][1]))
 
 
-            return fig[0], fig[1]
+            return *fig,
 
     def own(self, where: str, vizual: Callable, var: str, id: str, **params):
         """
