@@ -149,8 +149,8 @@ class Dashboard:
             df = self.data.copy()
 
             for i in joint:
-                if i[2] is not None:
-                    df = df[df[i[1]].isin([i[2]])]
+                if i[2] not in [None, []]:
+                    df = df[df[i[1]].isin(list(i[2]))]
 
             fig = []
             for ids in output_id:
@@ -158,7 +158,7 @@ class Dashboard:
                 fig.append(plot(df, **self.graphs[ids][1]))
 
 
-            return fig[0]
+            return fig[0], fig[1]
 
     def own(self, where: str, vizual: Callable, var: str, id: str, **params):
         """
