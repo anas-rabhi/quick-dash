@@ -35,4 +35,5 @@ new.add_callback(input_id=['top_dropdown', 'top_dropdown_2'], output_id=['mid_pl
 #new.get_info()
 
 
-new.run_app()
+if __name__ == '__main__':
+    new.run_app()
