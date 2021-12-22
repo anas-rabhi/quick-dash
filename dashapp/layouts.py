@@ -14,20 +14,18 @@ from .functions import *
 
 class Dashboard:
     """
+    Dash Class
 
+    Parameters
+    ----------
+    data: pd.DataFrame
+        The data to work on
+    title: str
+        The title that would be displayed at the top of the app.
     """
     # dataframe or dictionnary ? add bellow
     def __init__(self, data: pd.DataFrame, title: str = ' '):
-        """
-        Initiate the class with the following parameters.
 
-        Parameters
-        ----------
-        data: pd.DataFrame
-            The data to work on
-        title: str
-            The title that would be displayed at the top of the app.
-        """
         if isinstance(data, pd.DataFrame):
             pass
         else:
