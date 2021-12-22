@@ -14,13 +14,19 @@ from .functions import *
 
 class Dashboard:
     """
+
     """
     # dataframe or dictionnary ? add bellow
     def __init__(self, data: pd.DataFrame, title: str = ' '):
         """
+        Initiate the class with the following parameters.
 
-        :param data:
-        :param title:
+        Parameters
+        ----------
+        data: pd.DataFrame
+            The data to work on
+        title: str
+            The title that would be displayed at the top of the app.
         """
         if isinstance(data, pd.DataFrame):
             pass
@@ -45,6 +51,9 @@ class Dashboard:
     # show current figures --> jupyter, plot all
 
     def get_info(self):
+        """
+        Print some useful information about the app.
+        """
         print(f'Number of graphs displayed : {len(self.graphs)}')
         print(f'Number of filters displayed : {len(self.filters)}')
         print(f'Total elements displayed : {len(self.all_ids)}')
@@ -53,11 +62,16 @@ class Dashboard:
 
     def add_plot(self, where: str, plot: Callable, id: str, **params):
         """
-        :param where:
-        :param plot:
-        :param id:
-        :param params:
-        :return:
+        Add a plot in the current layer.
+
+        Parameters
+        ----------
+        where: {'mid', 'left', 'right'}
+            The position that the graph should be displayed
+        plot: Callable
+            Callable graph from plotly library
+        id: str
+            Unique id for the graph.
         """
         if id in self.all_ids:
             raise AttributeError("the ID is already taken, please choose another one")
@@ -93,13 +107,17 @@ class Dashboard:
 
     def add_filter(self, where: str, ftype: str, var: str, id: str, **params):
         """
+        Add a filter in the current layer.
 
-        :param where:
-        :param ftype:
-        :param var:
-        :param id:
-        :param params:
-        :return:
+        Parameters
+        ----------
+        where: {'mid', 'left', 'right'}
+            The position that the graph should be displayed
+        ftype:
+        var:
+        id: str
+            Unique id for the graph.
+        params:
         """
 
         if id in self.all_ids:
