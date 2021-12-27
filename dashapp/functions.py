@@ -1,4 +1,5 @@
 import dash
+import numpy as np
 from dash import dcc, html
 from dash.dependencies import Input, Output
 from typing import Dict, List, Callable
@@ -25,16 +26,16 @@ def define_params(data: pd.DataFrame, ftype: str, var: str, id: str, **params):
 
     param = {}
 
-    if type in ['slider', 'range_slider']:
+    if ftype in ['slider']:
 
         if 'value' not in params:
-            params['value'] = [data[var].min(),
-                               data[var].max()]
+            params['value'] = data[var].max()
 
         param['id'] = id
         param['min'] = data[var].min()
         param['max'] = data[var].max()
-        param['step'] = 0.5 #to change
+        param['step'] = (data[var].max() - data[var].min())/10
+        param['tooltip'] = {"placement": "bottom", "always_visible": True}
 
         return displayed(**param, **params)
 
@@ -48,7 +49,7 @@ def define_params(data: pd.DataFrame, ftype: str, var: str, id: str, **params):
 
         return displayed(**param, **params)
 
-    if type in ['date_range']:
+    if ftype in ['date_range']:
 
         param['id'] = id
         param['min_date_allowed'] = data[var].min()
